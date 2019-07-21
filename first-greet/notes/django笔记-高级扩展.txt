@@ -36,5 +36,12 @@ Django高级扩展
         Paginator对象
             创建对象：格式-->Paginator(list, integer)
                     返回值：返回一个分页对象
+            属性：
+                count 对象总数
+                num_pages 页面总数
+                page_range 页码列表
+            方法：
+                page(num)：会得到一个Page对象，如果所给页数不存在，抛出InvalidPage异常
+                get_page(num):会得到一个Page对象，同时会处理页数越界和非法页数的异常
 
         Page对象
