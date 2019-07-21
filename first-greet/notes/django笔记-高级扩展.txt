@@ -33,6 +33,8 @@ Django高级扩展
             2.配置settings.py文件，添加"MEDIA_ROOT=os.path.join(BASE_DIR, "static", "上传文件存储文件夹名")"
 
     分页：
-        Paginator
+        Paginator对象
+            创建对象：格式-->Paginator(list, integer)
+                    返回值：返回一个分页对象
 
         Page对象
