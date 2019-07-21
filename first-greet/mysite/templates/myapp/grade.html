@@ -1,0 +1,10 @@
+{% extends 'default/base.html' %}
+{% block main%}
+        <h1>年级信息</h1>
+
+        <div class="list-group">
+            {%for grade in grades%}
+                <a href="{{grade.id}}" class="list-group-item list-group-item-action">{{grade.name}}</a>
+            {%endfor%}
+        </div>
+{% endblock main%}

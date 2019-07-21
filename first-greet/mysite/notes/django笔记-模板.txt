@@ -1,0 +1,85 @@
+模板
+    标签：
+        if 
+            格式：{% if 表达式 %} 语句 {%endif%}
+            {% if 表达式 %} 语句 {%elif 表达式2%} 语句 {%else 表示3%} 语句 {%endif%}
+        for
+            格式：{%for 变量 in 列表%} 语句1 {%empty%} 语句2 {%endfor%}
+            注意：语句2 只有在 列表为空或者列表不存在时执行
+            {{forloop.counter}}循环计数器
+        
+        comment 多行注释
+            格式：{%comment%} 注释内容 {%endcomment%}
+            单行注释 {# 注释 #}
+        
+        ifequal, ifnotequal
+            格式：{%ifequal 值1 值2%} 内容 {%endifequal%}
+        
+        include 加载模板并以标签内的参数渲染
+            格式：{%include '模板目录' 参数1 参数2 %}
+        
+        url 反向解析
+            格式：{% url 'namespace:name' p1 p2 %}
+
+        csrf_token 用于跨站请求伪造保护
+            格式：{% csrf_token %}
+
+        block, extends 用于模板继承
+        
+        autoescape 用于HTML转义
+    
+    过滤器：在变量显示前修改
+        -- 格式 {{ var | 过滤器}}
+        -- 常用：lower upper
+        - 过滤器可以传递参数，参数用引号引起来 == join ==> {{列表|join:'#'}}
+        - 如果变量没有被提供或值为false，可以使用默认值 == default ==>格式：{{var | default:'value'}}
+        - 根据给定格式转换日期为字符串 == date ==> {{dateValue|date:'y-m-d'}}
+        - HTML转义 escape
+        - 加 {{value|add:value2}}
+        - 减 {{value|add:-value2}}
+        - 乘除 {% widthratio value1 value2 value3%} 
+            解释：最后结果=value1 / value2 * value3
+        - 是否整除 
+            {% if num | divisibleby:2%}
+            语句
+            {% else %}
+            语句
+            {% endif%}
+    
+    反向解析，第一步：在工程文件夹下的urls.py中的urlpatterns中，添加app路径解析，并标注namespace
+                    例：urlpatterns = [path('myapp/', include('myapp.urls'), namespace="myapp"),]
+             第二步：在app文件下的urls.py中的urlpatterns中，添加路由及对应的label
+                    例：urlpatterns = [path('register/', views.register, label="register"),]
+             第三步：在模板中使用时，按照如下格式填写要跳转的路由
+                    {% url 'namespace:label' 参数1 参数2 ...%} 参数根据路由情况填写
+        
+
+    模板继承
+        作用：减少页面内容的重复定义，实现页面重用
+        block标签：在父模板中预留区域，子模板去填充
+            语法：{% block 标签名 %} {% endblock 标签名 %}
+        
+        extends标签：继承模板，需要在模板文件的第一行
+                语法：{% extends '父模板路径'%}
+
+    HTML转义：
+        例：在myapp下的views.py中 return render(request, "myapp/test.html",{"code":"<h1>This is h1 tag</h1>"})
+            在templates/myapp下的test.html中，{{code}}
+        
+        将接收到的code当成普通字符串渲染
+
+        将接收到的字符串当成HTML代码渲染
+        例：
+            {{code|safe}}
+
+            {% autoescape off%}
+            {{code}}
+            {% endautoescape %}
+
+    CSRF：
+        跨站请求伪造，某些恶意网站包含链接、表单、按钮、JS，利用登录用户在浏览器中认证，从而
+
+        防止CSRF:1、在settings.py文件中的MIDDLEWARE增加'django.middleware.csrf.CsrfViewMiddleware'
+        在html文件中表单内添加 <form> {% csrf_token %} </form>
+
+    验证码：

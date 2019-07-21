@@ -1,0 +1,41 @@
+{% extends 'default/base.html' %}
+{% block main %}
+<hr />
+<form action="/myapp/register_info" method="POST">
+{% csrf_token %}
+<div class="form-group">
+    <label for="name">姓名:</label>
+    <input type="text" id="name" name="name">
+</div>
+
+<div class="form-group">
+    <label for="age">年龄:</label>
+    <input type="text" id="age" name="age">
+</div>
+
+<div class="form-group">
+    <label>性别:</label>
+    <label class="radio-inline"><input type="radio" name="gender" value="1">男</label>
+    &nbsp;&nbsp;
+    <label class="radio-inline"><input type="radio" name="gender" value="0">女</label>
+</div>
+
+<div class="form-group">
+    <label>爱好:</label>
+    <label class="checkbox-inline"><input type="checkbox" name="hobby" value="power">权力</label>
+    &nbsp;&nbsp;
+    <label class="checkbox-inline"><input type="checkbox" name="hobby" value="money">金钱</label>
+    &nbsp;&nbsp;
+    <label class="checkbox-inline"><input type="checkbox" name="hobby" value="wine">美酒</label>
+    &nbsp;&nbsp;
+    <label class="checkbox-inline"><input type="checkbox" name="hobby" value="sprint">精神</label>
+</div>
+<div class="form-group">
+    <label for="verifycode" placeholder="请输入右侧验证码">验证码:</label>
+    <input type="text" id="verifycode" name="verifycode">
+    <img src="/myapp/verifycode">
+</div>
+<span style="font-size:20px;color:red;">{{message}}</span> <br>
+<button type="submit" class="btn btn-primary">注册</button>
+</form>
+{% endblock main %}

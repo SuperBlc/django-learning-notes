@@ -1,0 +1,124 @@
+视图：
+	作用：接受web请求，并响应请求
+    本质：就是一个python函数
+    响应：页面 -> 重定向
+                -> 错误视图：404，500
+          json数据
+    
+    配置流程：制定根级url配置文件，在settings.py文件中的ROOT_URLCONF
+            urlpatterns，一个django.urls.path() 和/或 django.urls.re_path()的序列
+
+    引入其他url配置：在应用中创建urls.py文件，定义本应用的url配置
+                    【在工程urls.py文件中使用include方法，例：path("path_name",include("应用名.urls"))】
+
+    URL反向解析：如果在视图、模板中使用了硬编码链接，在url配置发生改变时，动态生成链接地址
+                方法：在使用链接时，通过url配置的名称，动态生成url地址。
+    
+    视图函数：定义视图，本质是一个函数，视图参数：一个HttpRequest实例
+            错误视图：400（错误出现在客户的操作）、500（视图代码中出现错误（服务器代码））、
+                    404（找不到网页，url匹配不成功，在tempates目录下定义404.html；
+                    需要配置工程下的settings.py==> DEBUG=False, ALLOWED_HOSTS=[] ）
+     
+    HttpRequest对象：
+        概述：服务器接收http请求后，会根据报文创建HttpRequest对象
+                视图的第一个参数就是HttpRequest对象
+                django创建，调用视图时传递给视图函数
+
+        属性：path（不包含域名、端口的完整路径）、method（请求的方法：常用的有GET、POST）、
+                encoding（标识浏览器提交的数据的编码方式，一般为utf-8）、
+                GET（包含了get请求的所有参数）、POST（包含了post请求的所有参数）、
+                FILES（包含了所有上传的文件）、COOKIES（包含了所有的cookies）、
+                session（回话）
+        
+        方法：is_ajax() 是否通过XMLHHttpRequest发起，是返回True
+
+		QueryDict对象：request对象中的GET、POST都属于QueryDict对象
+			方法：
+				get()： 根据键获取值，只能获取一个值
+					例：www.my.site/adb?a=1&b=4&c=4
+				getlist() 将键的值以列表的形式返回，可以获取多个值
+					例：www.my.site/adb?a=1&a=4&b=3&c=4
+
+	HttpResponse对象：给浏览器返回数据
+
+				用法：
+					直接返回数据：HttpResponse()
+
+					调用模板：render()
+							原型：render(request, templateName[, context])
+
+							作用：结合数据与模板，返回完整的页面
+				
+				属性：
+					content : 表示返回的内容
+					charset : 编码格式
+					status_code : 响应状态码 200 302 404
+					content-type:指定输出的MIME类型
+
+				方法：
+					init：使用页面内容实例化HttpResponse对象
+					write(content)：以文件的形式写入
+					flush：以文件的形式输出缓冲区
+					set_cookie(key, value="", max_age=None, expire=None)
+					delete_cookie：删除cookie，如果删除一个不存在的key，什么也不会发生
+
+				HttpResponseRedirect：重定向，服务器端跳转；简写，调用redirect()方法
+				【from django.shortcuts import redirect】
+
+				JsonResponse：
+						返回json数据，一般用于异步请求
+						__init__(self, data)
+						data 字典对象
+						注意 Content-type类型为application/json
+
+	状态保持：
+		概述：
+			http协议是无状态的，每次请求都是一个新的请求
+			客户端与服务端的一次通信就是一次会话
+			实现状态保持，及客户端或者服务端存储相关会话的数据
+		存储方式：cookie：所有的数据存储在客户端、session：所有的存储在服务端，在客户端用cookie存储session_id
+		目的：在一段时间内跟踪请求者的状态，可以实现跨页面访问当前的请求者信息
+		PS：不同的请求者之间不会共享这个数据，与请求者一一对应
+
+		启用session：settings.py文件中
+					在INSTALLED_APPS添加'django.contrib.sessions'
+					在MIDDLEWARE中添加'django.contrib.sessions'
+		使用session：
+					启用session后，每个HttpRequest对象都有一个session属性，一个类似字典的对象
+					get(key, default=None) 根据键获取session值
+					clear() 清空所有的会话
+					flush() 删除当前的会话并删除会话的cookie
+		
+		设置过期时间：
+					set_expiry(value)。如果不设置，两个星期后过期
+
+					value可以为整数（例如：0，关闭浏览器时过期）、
+					时间对象、None（永不过期）
+
+		存储session的位置：
+					数据库：默认存储在数据库中
+							// SESSION_ENGINE="django.contrib.session.backends."
+							添加'django.contrib.session'到settings.py中的INSTALLED_APPS
+
+					缓存：只存储在本地缓存中，若丢失不可找回，但比数据库快
+							SESSION_ENGINE="django.contrib.session.backends.cache"
+					数据库和缓存：优先从本地缓存中读取，读取不到再去数据库中获取
+							SESSION_ENGINE="django.contrib.session.cached_db"
+		
+		使用redis来存储session：
+					首先需要安装django-redis-sessions
+
+					在settings.py中配置：
+					SESSION_ENGINE='redis_sessions.session'
+					SESSION_REDIS_HOST = 'localhost'
+					SESSION_REDIS_PORT = 6379
+					SESSION_REDIS_DB = 0
+					SESSION_REDIS_PASSWORD = 'your_password'
+					SESSION_REDIS_PREFIX = 'sesison'
+
+
+                                
+
+
+
+

@@ -1,0 +1,50 @@
+登录：mysql -u <用户名> -p [密码]
+
+查看所有的数据库：show databases;
+
+使用数据库：use <数据库名>;
+
+删除数据库【危险操作】：drop database <数据库名>;
+
+创建数据库：create database <数据库名>
+
+查看用户及对应的主机：select Host,User,Password from mysql.user;
+
+删除用户： delete from mysql.user where User='<用户名>';
+
+创建用户并指定密码：create user '<用户名>'@'<主机>' identified by '<密码>';
+例： CREATE USER 'django1'@'localhost' INDETIFIED BY 'django';
+
+授权用户访问：grant <权限> on <数据库>.<表> to '<用户名>'@'<主机>'
+例：grant all on *.* to 'user1'@'127.0.0.1'
+权限：all-所有的权限（查看、创建、删除）
+      SELECT 查看
+      INSERT 插入
+      UPDATE 更新
+
+查看用户权限：show grants for 用户名@主机; 
+例：show grants for django1@'localhost';
+
+回收用户权限：revoke 权限 on 数据库.数据表 from 用户名@主机
+例1：revoke all on *.* from dba@localhost; 
+例2：revoke drop,select,delete on *.* from dba@localhost;  
+
+刷新系统权限相关表： flush privileges;
+
+mysql8 忘记root密码：
+终端1：
+> mysqld --console --skip-grant-tables --shared-memory
+终端2：
+> mysql -u root -p 
+> UPDATE mysql.user SET authentication_string='' WHERE user='root' and host='localhost'
+> ALTER user 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'admin';
+
+查看在线用户：
+mysql> show processlist;
++----+---------+----------------+-----------+---------+------+----------+------------------+
+| Id | User    | Host           | db        | Command | Time | State    | Info             |
++----+---------+----------------+-----------+---------+------+----------+------------------+
+|  6 | root    | localhost:9529 | NULL      | Query   |    0 | starting | show processlist |
+|  7 | django1 | localhost:9610 | django_db | Sleep   |  363 |          | NULL             |
++----+---------+----------------+-----------+---------+------+----------+------------------+
+2 rows in set (0.00 sec)

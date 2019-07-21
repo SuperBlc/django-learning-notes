@@ -1,0 +1,18 @@
+本次实验环境
+    python 3.5
+    django 2.2.3
+    mysql 5.7.12
+
+安装django框架：pip install django[==version]
+
+创建django项目：django-admin startproject <project_name>
+
+创建django项目中的app：python manage.py startapp <app_name>
+
+进入交互终端：python manage.py shell
+
+生成模型迁移文件：python manage.py makemigrations [app_name]
+
+将模型迁移到数据库中：python manage.py migrate
+
+启动django自带的小型服务端：python manage.py runserver

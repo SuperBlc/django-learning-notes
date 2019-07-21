@@ -1,0 +1,36 @@
+环境：Python3.5 + django2.2 + MySQL5.7.12
+
+E:\WEBDEVELOPING\DJANGO\FIRST-GREET\MYSITE
+│  db.sqlite3
+│  manage.py
+│
+└─mysite
+    │  settings.py
+    │  urls.py
+    │  wsgi.py
+    │  __init__.py
+
+
+manage.py   : 命令行工具，可使用多种方式与DJango项目进行交互，例如开启服务等
+
+__init__.py : 空文件，用于告知Python解释器，这个目录为Python模块/包
+settings.py : 项目配置文件
+urls.py     : 项目的url（Uniform Resource Locator，统一资源定位符）申明
+wsgi.py     : 项目与WSGI兼容的Web服务器入口
+
+创建应用：python manage.py startapp <app名字>
+应用目录说明：
+admin.py：站点配置
+models.py：模型
+views.py：视图
+
+激活应用：在settings.py中，将myapp应用加入到INSTALLED_APPS项中
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp'
+]
