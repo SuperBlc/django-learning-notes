@@ -38,6 +38,30 @@ def limit_student(request,num):
     return render(request, "myapp/student.html", \
         {"students":students,"num":num,"info":info, "prev":prev,"back":back})
 
+from django.core.paginator import Paginator
+NUM_IN_PAGE = 10
+def limit_student2(request,num):
+    """
+        使用Paginator进行分页
+    """
+    studentsList = Student.stu.all()
+    pInator = Paginator(studentsList, NUM_IN_PAGE)
+
+    page = pInator.get_page(num)
+
+    if num - 1 > 0:
+        prev = num - 1
+    elif num == 1:
+        prev = pInator.page_range[-1]
+    else:
+        prev = pInator.page_range[0]
+    back = 1 if (len(page.object_list) < NUM_IN_PAGE) else (num + 1)
+
+    info = "共有%d名学生，信息如下"%(page.number)
+    return render(request, "myapp/student2.html", \
+        {"students":page,"num":num,"info":info, "prev":prev,"back":back, "page":pInator.page_range})
+
+
 def gradeStu(request, num):
     grade = Grade.objects.get(pk=num)
     stu = grade.student_set.all()
