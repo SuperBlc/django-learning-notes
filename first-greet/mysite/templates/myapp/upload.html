@@ -1,4 +1,5 @@
-{% load static %}
+{% extends 'default/base.html' %}
+<!-- {% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,11 +10,28 @@
         <title>文件上传</title>
     </head>
     <body>
-        <form action="/myapp/savefile" method="POST" enctype="multipart/form-data">
-            {% csrf_token%}
-            <input type="file" name="file">
-            <input type="submit" value="上传">
-        </form>
+  
     <script type="text/javascript" src="{% static 'myapp/js/hello.js' %}"></script>
     </body>
-</html>>
+</html>> -->
+
+{% block head_title%}
+文件上传
+{% endblock head_title%}
+
+{% block title%}
+<h1>文件上传</h1>
+{% endblock title%}
+
+{% block main %}
+<br>
+<div class="container">
+
+    <form action="/myapp/savefile" method="POST" enctype="multipart/form-data">
+    {% csrf_token%}
+    <input type="file" name="file">
+    <input type="submit" value="上传">
+</form>
+</div>
+
+{% endblock main %}

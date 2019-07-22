@@ -1,7 +1,15 @@
 {% extends 'default/base.html' %}
+
+{% block head_title %}
+学生列表
+{% endblock head_title%}
+
+{% block title %}
+<h1>学生列表</h1>
+{% endblock title%}
+
 {%block main%}
         <a href="/myapp/grade"><i class="fas fa-arrow-circle-left">Goback</i></a><br />
-        <h1>学生列表</h1>
         <p>{{info}}</p>
         <table class="table">
             <thead class="thead-light">
@@ -27,8 +35,18 @@
             {%endfor%}
         </table>
         <div class="container-fluid">
+            <ul class="pagination">
             <a role="button" class="btn btn-info" href="/myapp/student/page{{prev}}">上一页</a>
-            <span>当前第{{num}}页</span>
+            {%for index in page%}
+                {% ifequal index num %}
+                <li class="page-item disabled"><a class="page-link" href="#">{{index}}</a></li>
+                {%else%}
+                <li class="page-item"><a class="page-link" href="/myapp/student/page{{index}}">{{index}}</a></li>
+                {%endifequal%}
+            {% endfor%}
+            
             <a role="button" class="btn btn-info" href="/myapp/student/page{{back}}">下一页</a>
+        </ul>
+        <span>当前第{{num}}页</span>
         </div>
 {% endblock main%}

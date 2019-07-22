@@ -1,6 +1,11 @@
 {% extends 'default/base.html' %}
+{% block head_title %}
+年级信息
+{% endblock head_title%}
+{% block title %}
+<h1>年级信息</h1>
+{% endblock title%}
 {% block main%}
-        <h1>年级信息</h1>
 
         <div class="list-group">
             {%for grade in grades%}
