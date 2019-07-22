@@ -61,3 +61,51 @@ Django高级扩展
 				previous_page_number() 前一页的页码，不存在则抛出InvalidPage异常
 				start_index() 此页中第一个对象的索引
 				end_index() 此页中的最后一个对象的索引
+
+		富文本：
+			安装：pip install django-tinymce
+			使用场景：
+				在站点中使用 
+					配置settings.py
+						1.INSTALLED_APPS 中添加 'tinymce'
+						2.文件末尾添加 TINYMCE_DEFAULT_CONFIG = {
+							'theme':'advance',
+							'width':600,
+							'height':400,
+						}
+					创建一个模型类
+						from tinymce.models import HTMLField
+						class Text(models.Model):
+							str = HTMLField()
+					配置站点：
+						from .models import Text
+						admin.site.register(Text)
+				在自定义视图中使用
+
+		Celery(分布式任务队列)：http://docs.jinkan.org/docs/celery/index.html
+			问题：
+				1.用户发起request，并且要等待response返回，但是在视图中有一些耗时的操作，导致用户等待，降低体验性
+				2.网站每隔一段时间要同步一次数据，但http请求是需要触发的
+			解决：
+				celery：
+					任务task 本质是一个python函数，将耗时操作封装成一个函数
+					队列queue 将要执行的任务放队列里
+					工人worker 负责执行队列中的任务
+					代理broker 负责调度，在部署环境中使用redis
+				安装：
+					pip install celery
+					pip install celery-with-redis
+					pip install django-celery
+				配置：
+					在 settings.py文件中添加celery的配置
+					import djcelery
+					djcelery.setup_loader() # 初始化
+					BROKER_URL = 'redis://:redis密码@主机:端口(6379)/0'
+					CELERY_IMPORTS = ('myapp.task)
+				在应用目录下创建task.py文件
+
+				迁移，生成 celery需要的数据库表 python manage.py migrate
+
+
+
+
