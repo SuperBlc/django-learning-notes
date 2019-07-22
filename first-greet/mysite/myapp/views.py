@@ -248,3 +248,24 @@ def savefile(request):
         return HttpResponse("上传成功：%s"%file_path)
     else:
         return HttpResponse("上传失败")
+
+### API
+from django.http import JsonResponse
+def api_students(request):
+    student = Student.stu.all()
+    l = []
+    for s in student:
+        l.append({"id":s.id,"name":s.name, "age":s.age, "introduction":s.intro})
+    return JsonResponse({"students":l})
+
+from django.http import JsonResponse
+def api_grade(request, num):
+    if num > 0 and num < 6:
+        grade = Grade.objects.get(pk=num)
+        stu = grade.student_set.all()
+        l = []
+        for s in stu:
+            l.append({"id":s.id,"name":s.name, "age":s.age, "introduction":s.intro})
+        return JsonResponse({"status":200,"students":l})
+    else:
+        return JsonResponse({"status":404,"students":[]})

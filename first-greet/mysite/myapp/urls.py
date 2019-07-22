@@ -10,7 +10,7 @@ urlpatterns = [
     path('grade/ftest', views.F_test),
     path('student/all',views.student),
     path('student/create', views.createStu),
-    # path('student/page<int:num>',views.limit_student),
+    path('student/page<int:num>',views.limit_student),
     path('student/page<int:num>',views.limit_student2),
     path('student/search', views.lookup_stu),
     path('attribute', views.attribute),
@@ -24,4 +24,7 @@ urlpatterns = [
     path('verifycode', views.verifycode),
     path('upload', views.upload),
     path('savefile', views.savefile),
+    ## API
+    path('student/api/all',views.api_students),
+    path('student/api/grade<int:num>',views.api_grade),
 ]
