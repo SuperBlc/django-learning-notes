@@ -1,3 +1,10 @@
+# File
 *.pdf
+
+# Useless Directory
 first-greet/mysite/static/uploading_files
 
+### VS Code cache
+# /
+__pycache__
+.vscode
