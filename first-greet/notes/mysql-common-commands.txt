@@ -2,7 +2,7 @@
 	1. 选择的版本是mysql-5.7.27-winx64压缩包版本，解压，找到其中bin目录所在的路径，此处称为MTSQL_ROOT
 	2. （此步骤可以略过）将MYSQL_ROOT/bin添加到系统环境变量path中
 	3. 在MYSQL_ROOT下增加一个my.ini的配置文件，文件内容如下
-	
+	#######################################################
 	[mysqld]
 	basedir = MYSQL_ROOT
 	datadir = MYSQL_ROOT\\data
@@ -15,8 +15,26 @@
 
 	[mysql]
 	default-character-set=utf8
+	########################################################
 	4. 在MYSQL_ROOT下增加一个名为data的文件夹
-	5. 用管理员权限运行
+	5. 用管理员权限运行CMD
+	6. （如果完成了步骤2，此步骤可以省略）在CMD中运行命令'cd /D MYSQL_ROOT/bin'
+	7. 在CMD中运行命令'mysqld --install MYSQL57 --defaults-file=MYSQL_ROOT/my.ini'
+		在--install后面可以添加安装的mysql服务的名字，也可以不加，不加默认就是MYSQL
+		--defaults-file后面跟的是配置文件的路径，切记一定要是绝对路径
+	8. 初始化数据存储目录，在CMD中运行命令"mysqld --initialize"
+	9. 开启mysql服务，在CMD中运行命令"net start 服务名"
+		此处的服务名须于安装时指定的一致，若安装是未指定，默认为MYSQL
+	10. 登录，命令见下，此处会报错，登录失败，由于安装时，mysql为我们随机生成了一个密码，
+		不知道密码，随便输入一串字符串即可，登录失败后，会在MYSQL_ROOT/data下生成一个
+		后缀名为.err的文件，打开此文件，在第8行或文件中搜索“A temporary password is generated for root@localhost:”，
+		可以看到mysql为我们生成的root的零时密码，用此密码登录即可。
+	11. 修改零时密码为自己的密码
+		（1）登录后，运行命令修改为自己的新密码：
+		ALTER user user() IDENTIFIED BY "你的新密码";
+		（2）刷新权限
+		FLUSH PRIVILEGES;
+	12. 退出，并用自己的新密码登录。
 
 
 登录：mysql -u <用户名> -p [密码]
@@ -52,7 +70,7 @@
 
 刷新系统权限相关表： flush privileges;
 
-mysql8 忘记root密码：
+mysql忘记root密码：
 终端1：
 > mysqld --console --skip-grant-tables --shared-memory
 终端2：
