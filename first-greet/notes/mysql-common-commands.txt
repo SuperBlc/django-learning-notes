@@ -1,3 +1,24 @@
+安装：
+	1. 选择的版本是mysql-5.7.27-winx64压缩包版本，解压，找到其中bin目录所在的路径，此处称为MTSQL_ROOT
+	2. （此步骤可以略过）将MYSQL_ROOT/bin添加到系统环境变量path中
+	3. 在MYSQL_ROOT下增加一个my.ini的配置文件，文件内容如下
+	
+	[mysqld]
+	basedir = MYSQL_ROOT
+	datadir = MYSQL_ROOT\\data
+	character-set-server=utf8
+	performance_schema_max_table_instances=400
+	table_definition_cache=400
+	table_open_cache=256
+	default-storage-engine=INNODB
+	sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
+
+	[mysql]
+	default-character-set=utf8
+	4. 在MYSQL_ROOT下增加一个名为data的文件夹
+	5. 用管理员权限运行
+
+
 登录：mysql -u <用户名> -p [密码]
 
 查看所有的数据库：show databases;
@@ -18,9 +39,9 @@
 授权用户访问：grant <权限> on <数据库>.<表> to '<用户名>'@'<主机>'
 例：grant all on *.* to 'user1'@'127.0.0.1'
 权限：all-所有的权限（查看、创建、删除）
-      SELECT 查看
-      INSERT 插入
-      UPDATE 更新
+	SELECT 查看
+	INSERT 插入
+	UPDATE 更新
 
 查看用户权限：show grants for 用户名@主机; 
 例：show grants for django1@'localhost';
